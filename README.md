@@ -39,8 +39,8 @@ Install-Package NcmFox
 ### 从源码构建
 
 ```bash
-git clone https://github.com/Xdyuorine/NcmFox.git
-cd NcmFox
+git clone https://github.com/Xdyu1522/NcmFox.git
+cd NcmFox/NcmFox
 dotnet build
 ```
 
