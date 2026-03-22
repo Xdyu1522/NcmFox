@@ -8,9 +8,10 @@ namespace NcmFox.Core;
 
 internal static class AudioDecipher
 {
-    private static byte[] BuildLookupTable(byte[] keyBox)
+    private static byte[] BuildKeyStream(byte[] keyBox)
     {
         var lut = new byte[256];
+        var keyStream = new byte[256];
 
         for (int j = 0; j < 256; j++)
         {
@@ -18,12 +19,18 @@ internal static class AudioDecipher
             lut[j] = keyBox[keyIndex];
         }
 
-        return lut;
+        for (int i = 0; i < 256; i++)
+        {
+            keyStream[i] = lut[(i + 1) & 0xff];
+        }
+
+        return keyStream;
     }
 
     public static void Decipher(Stream input, Stream output, byte[] keyBox)
     {
-        var lut = BuildLookupTable(keyBox);
+        var keyStream = BuildKeyStream(keyBox);
+
         var bufferSize = NcmConfig.Current.BufferSize;
         var buffer = ArrayPool<byte>.Shared.Rent(bufferSize);
 
@@ -34,7 +41,7 @@ internal static class AudioDecipher
 
             while ((read = input.Read(buffer, 0, bufferSize)) > 0)
             {
-                Process(buffer.AsSpan(0, read), lut, offset);
+                Process(buffer.AsSpan(0, read), keyStream, offset);
                 output.Write(buffer, 0, read);
                 offset += read;
             }
@@ -56,66 +63,77 @@ internal static class AudioDecipher
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static void Process(Span<byte> buffer, byte[] lut, int offset)
+    private static void Process(Span<byte> buffer, byte[] keyStream, int offset)
     {
         if (Vector.IsHardwareAccelerated)
         {
-            ProcessSimd(buffer, lut, offset);
+            ProcessSimd(buffer, keyStream, offset);
         }
         else
         {
-            ProcessScalar(buffer, lut, offset);
+            ProcessScalar(buffer, keyStream, offset);
         }
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static void ProcessSimd(Span<byte> buffer, byte[] lut, int offset)
+    private static void ProcessSimd(Span<byte> buffer, byte[] keyStream, int offset)
     {
         int i = 0;
         int vectorSize = Vector<byte>.Count;
-        int j = (offset + 1) & 0xff;
+        int j = offset & 0xff;
 
-        Span<byte> keyBytes = stackalloc byte[vectorSize];
+        Span<byte> temp = stackalloc byte[Vector<byte>.Count];
 
         for (; i <= buffer.Length - vectorSize; i += vectorSize)
         {
-            for (int k = 0; k < vectorSize; k++)
+            if (j + vectorSize <= 256)
             {
-                keyBytes[k] = lut[(j + k) & 0xff];
+                var keyVec = new Vector<byte>(keyStream, j);
+                var dataVec = new Vector<byte>(buffer.Slice(i, vectorSize));
+                (dataVec ^ keyVec).CopyTo(buffer.Slice(i, vectorSize));
             }
+            else
+            {
+                int firstPart = 256 - j;
 
-            var dataVec = new Vector<byte>(buffer.Slice(i, vectorSize));
-            var keyVec = new Vector<byte>(keyBytes);
-            (dataVec ^ keyVec).CopyTo(buffer.Slice(i, vectorSize));
+                keyStream.AsSpan(j, firstPart).CopyTo(temp);
+                keyStream.AsSpan(0, vectorSize - firstPart).CopyTo(temp[firstPart..]);
+
+                var keyVec = new Vector<byte>(temp);
+                var dataVec = new Vector<byte>(buffer.Slice(i, vectorSize));
+                (dataVec ^ keyVec).CopyTo(buffer.Slice(i, vectorSize));
+            }
 
             j = (j + vectorSize) & 0xff;
         }
 
-        ProcessScalar(buffer.Slice(i), lut, offset + i);
+        // 剩余部分走标量
+        ProcessScalar(buffer.Slice(i), keyStream, offset + i);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static void ProcessScalar(Span<byte> buffer, byte[] lut, int offset)
+    private static void ProcessScalar(Span<byte> buffer, byte[] keyStream, int offset)
     {
-        int j = (offset + 1) & 0xff;
+        int j = offset & 0xff;
         int i = 0;
 
         for (; i <= buffer.Length - 8; i += 8)
         {
-            buffer[i + 0] ^= lut[j];
-            buffer[i + 1] ^= lut[(j + 1) & 0xff];
-            buffer[i + 2] ^= lut[(j + 2) & 0xff];
-            buffer[i + 3] ^= lut[(j + 3) & 0xff];
-            buffer[i + 4] ^= lut[(j + 4) & 0xff];
-            buffer[i + 5] ^= lut[(j + 5) & 0xff];
-            buffer[i + 6] ^= lut[(j + 6) & 0xff];
-            buffer[i + 7] ^= lut[(j + 7) & 0xff];
+            buffer[i + 0] ^= keyStream[j];
+            buffer[i + 1] ^= keyStream[(j + 1) & 0xff];
+            buffer[i + 2] ^= keyStream[(j + 2) & 0xff];
+            buffer[i + 3] ^= keyStream[(j + 3) & 0xff];
+            buffer[i + 4] ^= keyStream[(j + 4) & 0xff];
+            buffer[i + 5] ^= keyStream[(j + 5) & 0xff];
+            buffer[i + 6] ^= keyStream[(j + 6) & 0xff];
+            buffer[i + 7] ^= keyStream[(j + 7) & 0xff];
+
             j = (j + 8) & 0xff;
         }
 
         for (; i < buffer.Length; i++)
         {
-            buffer[i] ^= lut[j];
+            buffer[i] ^= keyStream[j];
             j = (j + 1) & 0xff;
         }
     }

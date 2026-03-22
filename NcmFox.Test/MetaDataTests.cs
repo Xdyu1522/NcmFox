@@ -35,11 +35,17 @@ public class MetaDataTests
     [Fact]
     public void String_MetaData_Should_Parse()
     {
-        using var file = TagLib.File.Create(@"E:\CloudMusic\ARForest - Inverted World.flac");
-        var comment = file.Tag.Description;
+        var comment = "163 key(Don't modify):L64FU3W4YxX3ZFTmbZ+8/W4HcKVCxy2JN1Q8nMrdgD0nS8fJXSW/HdU6vdcylkmoQFYBGvEvZ/gP3h8hrLdx3iX1WhRZYmx1g7ycjDzPWRM8EGejoJvU8j6A1vmPM19c7pSfRDCkM5VIhnJXv5E60GKyC6C0zTXSFFZOHNU7Kb0Tqifd40KM/sfG2DilvHkFngayVOQWfrB/8JWpAZQjm5t6on/Ea9/RCrLUkXfX8cL08SvXi+lJq+PNzlYJji4KZxWWUUlbqsxTBJYTCLT+8QsYNA9EULI+u+PAi/lxDG/MOULjJpyUHncgm4S1zN36picU2KPFmvWOuypL12oLRt5LQ3IEzBhU9o1AjUpVfG6PGcCRQuvzZV4BlXpX1ga3evyPwCw4AWslzxAVTnReGaFZtb5uEoR8ade5/3BSg/Yr9280shc0HqrlkMZIVSmmnpxIEi7uYeGjZPyhkJs5RrM1mpfrRPDSTPr3Y7b7NMljyt7xnon3797z3UGbWGuDx/8aRdBp5mgbBXY4kv31PZaGnPVq7QQ5ALuCnqBQpmbzrwbncX//3ZpMiH3I5BEhiGNXu8VHtrkmP8Pj9rZp82bu/UU7zuvz5obWatgsXAPQN/luNuQd6hmHuLrPN+IP";
         var result = MetaDataHelper.TryGetMetaData(comment, out var metaData);
         result.Should().BeTrue();
         metaData.Should().NotBeNull();
         metaData.SongName.Should().Be("Inverted World");
+    }
+
+    public string GetEncryptedMetaDataFromFile(string filePath)
+    {
+        using var file = TagLib.File.Create(filePath);
+        var comment = file.Tag.Description;
+        return comment;
     }
 }

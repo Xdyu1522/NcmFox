@@ -8,6 +8,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b163fe47-963c-470e-84e0-51a821ba6147" name="更改" comment="">
+      <change afterPath="$PROJECT_DIR$/NcmFox.sln.DotSettings.user" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/NcmFox/Config/NcmConfig.cs" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/NcmFox/Config/NcmOptions.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.NcmFox/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NcmFox/.idea/workspace.xml" afterDir="false" />
@@ -15,6 +16,8 @@
       <change beforePath="$PROJECT_DIR$/NcmFox/Core/AudioDecipher.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NcmFox/Core/AudioDecipher.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NcmFox/Core/CoverParser.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NcmFox/Core/CoverParser.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NcmFox/Core/MetaDataParser.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NcmFox/Core/MetaDataParser.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NcmFox/NcmDecoder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NcmFox/NcmDecoder.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NcmFox/Utils/CryptoUtils.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NcmFox/Utils/CryptoUtils.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,31 +63,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;.NET 项目.NcmFox.Test.executor&quot;: &quot;Run&quot;,
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
-    &quot;ddf6e954-c52b-4da6-bab0-85d05a458d0f.executor&quot;: &quot;Debug&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.sourceCode.HTTP Request&quot;,
-    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    ".NET 项目.NcmFox.Test.executor": "Run",
+    "370db1f7-5c15-4475-a440-1557d8c47921.executor": "Debug",
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "ddf6e954-c52b-4da6-bab0-85d05a458d0f.executor": "Debug",
+    "git-widget-placeholder": "main",
+    "junie.onboarding.icon.badge.shown": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.sourceCode.HTTP Request",
+    "to.speed.mode.migration.done": "true",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected=".NET 项目.NcmFox.Test">
     <configuration name="NcmFox.Test" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="$PROJECT_DIR$/NcmFox.Test/bin/Debug/net10.0/NcmFox.Test.dll" />
@@ -119,7 +123,7 @@
       <workItem from="1773559987948" duration="5418000" />
       <workItem from="1774071227595" duration="1200000" />
       <workItem from="1774072464452" duration="520000" />
-      <workItem from="1774154914792" duration="1275000" />
+      <workItem from="1774154914792" duration="2366000" />
     </task>
     <servers />
   </component>

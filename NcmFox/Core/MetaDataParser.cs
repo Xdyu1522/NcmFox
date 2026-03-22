@@ -1,3 +1,4 @@
+using System.Buffers.Text;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Text.Json;
@@ -15,7 +16,7 @@ internal static class MetaDataParser
 
         if (length <= 0)
             return null;
-        
+
         if (NcmConfig.Current.EnableMetaDataSizeCheck)
         {
             if (length > NcmConfig.Current.MaxMetadataSize)
@@ -33,37 +34,21 @@ internal static class MetaDataParser
         return ParseJson(json);
     }
 
-    /// <summary>
-    /// Deciphers a JSON string from the provided encrypted byte array.
-    /// </summary>
-    /// <param name="originBytes">The encrypted byte array to decipher.</param>
-    /// <returns>The deciphered JSON string, or an empty string if decryption fails.</returns>
     private static string DecipherJson(byte[] originBytes)
     {
-        // 跳过 "163 key(Don't modify):"
         var base64Span = originBytes.AsSpan(22);
-        
-        var encrypted = Convert.FromBase64String(
-            Encoding.UTF8.GetString(base64Span)
-        );
-        
-        var jsonBytes = CryptoUtils.AesDecrypt(
-            encrypted,
-            NcmConstants.MetaKey
-        );
-        
-        // 跳过 "music:"
+
+        var encrypted = new byte[Base64.GetMaxDecodedFromUtf8Length(base64Span.Length)];
+        Base64.DecodeFromUtf8(base64Span, encrypted, out _, out int written);
+        encrypted = encrypted.AsSpan(0, written).ToArray();
+
+        var jsonBytes = CryptoUtils.AesDecrypt(encrypted, NcmConstants.MetaKey);
+
         var jsonSpan = jsonBytes.AsSpan(6);
-        
+
         return Encoding.UTF8.GetString(jsonSpan);
     }
 
-    /// <summary>
-    /// Deciphers a JSON string from the provided encrypted string.
-    /// </summary>
-    /// <param name="originString">The encrypted string to decipher.</param>
-    /// <returns>The deciphered JSON string, or an empty string if decryption fails.</returns>
-    /// <exception cref="InvalidDataException">Thrown when the input string is null or empty.</exception>
     public static string DecipherJson(string originString)
     {
         if (string.IsNullOrEmpty(originString))
