@@ -4,7 +4,7 @@ English | [简体中文](README.md)
 
 [![NuGet Version](https://img.shields.io/nuget/v/NcmFox?style=flat-square)](https://www.nuget.org/packages/NcmFox/)
 [![NuGet Downloads](https://img.shields.io/nuget/dt/NcmFox?style=flat-square)](https://www.nuget.org/packages/NcmFox/)
-[![License](https://img.shields.io/github/license/Xdyuorine/NcmFox?style=flat-square)](LICENSE)
+[![License](https://img.shields.io/github/license/Xdyu1522/NcmFox?style=flat-square)](LICENSE)
 [![.NET](https://img.shields.io/badge/.NET-8.0%20%7C%209.0-512BD4?style=flat-square)](https://dotnet.microsoft.com/)
 
 A high-performance .NET library for decrypting NCM files from NetEase Cloud Music.
@@ -193,7 +193,7 @@ This library is for educational and personal use only. Please respect copyright 
 
 ## 📮 Contact
 
-- GitHub Issues: [https://github.com/Xdyuorine/NcmFox/issues](https://github.com/Xdyuorine/NcmFox/issues)
+- GitHub Issues: [https://github.com/Xdyu1522/NcmFox/issues](https://github.com/Xdyu1522/NcmFox/issues)
 
 ---
 
