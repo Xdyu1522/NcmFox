@@ -8,7 +8,7 @@
         
         <!-- Package metadata -->
         <PackageId>NcmFox</PackageId>
-        <Version>1.0.0</Version>
+        <Version>0.1.0</Version>
         <Authors>Xdyu</Authors>
         <Description>High-performance NCM file decryption library with SIMD optimization for NetEase Cloud Music.</Description>
         <PackageTags>ncm;netease;music;decryption;audio;flac;mp3</PackageTags>
