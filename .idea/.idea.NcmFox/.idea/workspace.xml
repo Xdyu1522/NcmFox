@@ -8,19 +8,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b163fe47-963c-470e-84e0-51a821ba6147" name="更改" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.NcmFox/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NcmFox/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NcmFox.Test/NcmFox.Test.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/NcmFox.Test/NcmFox.Test.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NcmFox/Config/NcmConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NcmFox/Config/NcmConfig.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NcmFox/Config/NcmOptions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NcmFox/Config/NcmOptions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NcmFox/MetaDataHelper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NcmFox/MetaDataHelper.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NcmFox/Models/CoverFormat.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NcmFox/Models/CoverFormat.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NcmFox/Models/MetaData.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NcmFox/Models/MetaData.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NcmFox/Models/NcmCover.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NcmFox/Models/NcmCover.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NcmFox/Models/NcmFile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NcmFox/Models/NcmFile.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NcmFox/Models/SaveFormat.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NcmFox/Models/SaveFormat.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NcmFox/NcmDecoder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NcmFox/NcmDecoder.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NcmFox/NcmFileExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NcmFox/NcmFileExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NcmFox/NcmFox.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/NcmFox/NcmFox.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README_EN.md" beforeDir="false" afterPath="$PROJECT_DIR$/README_EN.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -127,7 +116,7 @@
       <workItem from="1774071227595" duration="1200000" />
       <workItem from="1774072464452" duration="520000" />
       <workItem from="1774154914792" duration="2708000" />
-      <workItem from="1774166543970" duration="734000" />
+      <workItem from="1774166543970" duration="1213000" />
     </task>
     <servers />
   </component>

@@ -195,6 +195,10 @@ NcmFox 针对高吞吐量进行了深度优化：
 
 - GitHub Issues: [https://github.com/Xdyu1522/NcmFox/issues](https://github.com/Xdyu1522/NcmFox/issues)
 
----
+## 🙏 致谢
+
+感谢 JetBrains 为本项目提供 Rider IDE 的非商业许可证支持，这对项目的开发提供了极大的帮助。
+
+[![JetBrains](https://img.shields.io/badge/Supported%20by-JetBrains-000000?style=flat-square&logo=jetbrains)](https://www.jetbrains.com/)
 
 **Made with ❤️ by Xdyuorine**

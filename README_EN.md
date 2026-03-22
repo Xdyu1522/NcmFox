@@ -195,6 +195,10 @@ This library is for educational and personal use only. Please respect copyright 
 
 - GitHub Issues: [https://github.com/Xdyu1522/NcmFox/issues](https://github.com/Xdyu1522/NcmFox/issues)
 
----
+## 🙏 Acknowledgements
+
+Special thanks to JetBrains for providing a non-commercial license for Rider, which greatly supports the development of this project.
+
+[![JetBrains](https://img.shields.io/badge/Supported%20by-JetBrains-000000?style=flat-square&logo=jetbrains)](https://www.jetbrains.com/)
 
 **Made with ❤️ by Xdyuorine**
