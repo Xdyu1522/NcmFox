@@ -3,6 +3,7 @@ using System.Text;
 using System.Text.Json;
 using NcmFox.Models;
 using NcmFox.Utils;
+using NcmFox.Config;
 
 namespace NcmFox.Core;
 
@@ -14,6 +15,14 @@ internal static class MetaDataParser
 
         if (length <= 0)
             return null;
+        
+        if (NcmConfig.Current.EnableMetaDataSizeCheck)
+        {
+            if (length > NcmConfig.Current.MaxMetadataSize)
+            {
+                throw new InvalidDataException($"Metadata size ({length} bytes) larger than max metadata size ({NcmConfig.Current.MaxMetadataSize} bytes)");
+            }
+        }
 
         var metadata = reader.ReadBytes(length);
 

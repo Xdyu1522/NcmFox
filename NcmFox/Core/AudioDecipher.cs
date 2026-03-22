@@ -1,75 +1,50 @@
+using System.Buffers;
 using System.Numerics;
+using System.Runtime.CompilerServices;
+using NcmFox.Config;
 using NcmFox.Models;
 
 namespace NcmFox.Core;
 
 internal static class AudioDecipher
 {
-    private const int BufferSize = 1024 * 1024; // 1MB
-
-    // =========================
-    // LUT 构建
-    // =========================
     private static byte[] BuildLookupTable(byte[] keyBox)
     {
         var lut = new byte[256];
 
         for (int j = 0; j < 256; j++)
         {
-            var keyIndex =
-                (keyBox[j] + keyBox[(keyBox[j] + j) & 0xff]) & 0xff;
-
+            var keyIndex = (keyBox[j] + keyBox[(keyBox[j] + j) & 0xff]) & 0xff;
             lut[j] = keyBox[keyIndex];
         }
 
         return lut;
     }
 
-    // =========================
-    // LUT 扩展（关键优化）
-    // =========================
-    private static byte[] ExpandLookupTable(byte[] lut)
-    {
-        // 扩大到更安全的范围（至少 buffer size）
-        var expanded = new byte[BufferSize]; // 1MB级别
-
-        for (int i = 0; i < expanded.Length; i++)
-        {
-            expanded[i] = lut[i & 0xff];
-        }
-
-        return expanded;
-    }
-
-    // =========================
-    // 主解密入口（Stream）
-    // =========================
-    public static void Decipher(
-        Stream input,
-        Stream output,
-        byte[] keyBox)
+    public static void Decipher(Stream input, Stream output, byte[] keyBox)
     {
         var lut = BuildLookupTable(keyBox);
-        var expandedLut = ExpandLookupTable(lut);
+        var bufferSize = NcmConfig.Current.BufferSize;
+        var buffer = ArrayPool<byte>.Shared.Rent(bufferSize);
 
-        var buffer = new byte[BufferSize];
-        int offset = 0;
-
-        int read;
-
-        while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
+        try
         {
-            ProcessSimd(buffer.AsSpan(0, read), expandedLut, offset);
+            int offset = 0;
+            int read;
 
-            output.Write(buffer, 0, read);
-
-            offset += read;
+            while ((read = input.Read(buffer, 0, bufferSize)) > 0)
+            {
+                Process(buffer.AsSpan(0, read), lut, offset);
+                output.Write(buffer, 0, read);
+                offset += read;
+            }
+        }
+        finally
+        {
+            ArrayPool<byte>.Shared.Return(buffer);
         }
     }
 
-    // =========================
-    // NcmFile 重载
-    // =========================
     public static void Decipher(NcmFile file, Stream outputStream)
     {
         if (!file.IsInitialized)
@@ -77,36 +52,71 @@ internal static class AudioDecipher
 
         using var fs = file.FileInfo.OpenRead();
         fs.Position = file.AudioOffset;
-
         Decipher(fs, outputStream, file.KeyBox);
     }
 
-    // =========================
-    // SIMD 核心处理
-    // =========================
-    private static void ProcessSimd(
-        Span<byte> buffer,
-        byte[] expandedLut,
-        int offset)
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static void Process(Span<byte> buffer, byte[] lut, int offset)
+    {
+        if (Vector.IsHardwareAccelerated)
+        {
+            ProcessSimd(buffer, lut, offset);
+        }
+        else
+        {
+            ProcessScalar(buffer, lut, offset);
+        }
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static void ProcessSimd(Span<byte> buffer, byte[] lut, int offset)
     {
         int i = 0;
         int vectorSize = Vector<byte>.Count;
+        int j = (offset + 1) & 0xff;
 
-        int baseOffset = offset & 0xff;
+        Span<byte> keyBytes = stackalloc byte[vectorSize];
 
         for (; i <= buffer.Length - vectorSize; i += vectorSize)
         {
-            int lutIndex = baseOffset + i;
+            for (int k = 0; k < vectorSize; k++)
+            {
+                keyBytes[k] = lut[(j + k) & 0xff];
+            }
 
             var dataVec = new Vector<byte>(buffer.Slice(i, vectorSize));
-            var keyVec = new Vector<byte>(expandedLut, lutIndex);
-
+            var keyVec = new Vector<byte>(keyBytes);
             (dataVec ^ keyVec).CopyTo(buffer.Slice(i, vectorSize));
+
+            j = (j + vectorSize) & 0xff;
+        }
+
+        ProcessScalar(buffer.Slice(i), lut, offset + i);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static void ProcessScalar(Span<byte> buffer, byte[] lut, int offset)
+    {
+        int j = (offset + 1) & 0xff;
+        int i = 0;
+
+        for (; i <= buffer.Length - 8; i += 8)
+        {
+            buffer[i + 0] ^= lut[j];
+            buffer[i + 1] ^= lut[(j + 1) & 0xff];
+            buffer[i + 2] ^= lut[(j + 2) & 0xff];
+            buffer[i + 3] ^= lut[(j + 3) & 0xff];
+            buffer[i + 4] ^= lut[(j + 4) & 0xff];
+            buffer[i + 5] ^= lut[(j + 5) & 0xff];
+            buffer[i + 6] ^= lut[(j + 6) & 0xff];
+            buffer[i + 7] ^= lut[(j + 7) & 0xff];
+            j = (j + 8) & 0xff;
         }
 
         for (; i < buffer.Length; i++)
         {
-            buffer[i] ^= expandedLut[baseOffset + i];
+            buffer[i] ^= lut[j];
+            j = (j + 1) & 0xff;
         }
     }
 }

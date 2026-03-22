@@ -8,34 +8,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b163fe47-963c-470e-84e0-51a821ba6147" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.NcmFox/.idea/indexLayout.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.NcmFox/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.NcmFox/.idea/projectSettingsUpdater.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.NcmFox/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.idea.NcmFox/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/NcmFox.Test/MetaDataTests.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/NcmFox.Test/NcmFox.Test.csproj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/NcmFox.sln" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/NcmFox.sln.DotSettings.user" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/NcmFox/Core/AudioDecipher.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/NcmFox/Core/CoverParser.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/NcmFox/Core/KeyBoxBuilder.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/NcmFox/Core/KeyDataParser.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/NcmFox/Core/MetaDataParser.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/NcmFox/Core/NcmConstants.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/NcmFox/MetaDataHelper.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/NcmFox/Models/CoverFormat.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/NcmFox/Models/MetaData.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/NcmFox/Models/NcmCover.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/NcmFox/Models/NcmFile.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/NcmFox/Models/NcmMetaDataDto.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/NcmFox/Models/SaveFormat.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/NcmFox/NcmDecoder.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/NcmFox/NcmFileExtensions.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/NcmFox/NcmFox.csproj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/NcmFox/Utils/CryptoUtils.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/NcmFox/Utils/FileChecker.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/NcmFox/Config/NcmConfig.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/NcmFox/Config/NcmOptions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.NcmFox/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NcmFox/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NcmFox.Test/MetaDataTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NcmFox.Test/MetaDataTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NcmFox/Core/AudioDecipher.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NcmFox/Core/AudioDecipher.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NcmFox/Core/CoverParser.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NcmFox/Core/CoverParser.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NcmFox/Core/MetaDataParser.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NcmFox/Core/MetaDataParser.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,6 +35,8 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/be60368fed3944e4ab3429e105a660531cd938/34/b0b323cd/JsonSerializer.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/d2fc4e5236f74a0d8789f902be54d3bbf48938/18/44b39395/ArgumentOutOfRangeException.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/d2fc4e5236f74a0d8789f902be54d3bbf48938/40/52ab67b4/Stream.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/NcmFox/Config/NcmConfig.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/NcmFox/Config/NcmOptions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/NcmFox/Core/AudioDecipher.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/NcmFox/Core/CoverParser.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/NcmFox/MetadataHelper.cs" root0="FORCE_HIGHLIGHTING" />
@@ -70,6 +51,7 @@
     <commands />
     <urls />
   </component>
+  <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
 }</component>
@@ -137,12 +119,14 @@
       <workItem from="1773559987948" duration="5418000" />
       <workItem from="1774071227595" duration="1200000" />
       <workItem from="1774072464452" duration="520000" />
+      <workItem from="1774154914792" duration="1275000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
   <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="UnknownFeatures">
     <option featureType="dependencySupport" implementationName="dotnet:Microsoft.ApplicationInsights" />

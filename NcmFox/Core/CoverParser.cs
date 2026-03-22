@@ -1,3 +1,4 @@
+using NcmFox.Config;
 using NcmFox.Models;
 
 namespace NcmFox.Core;
@@ -14,6 +15,14 @@ internal static class CoverParser
 
         if (imageSize <= 0)
             return null;
+
+        if (NcmConfig.Current.EnableCoverSizeCheck)
+        {
+            if (imageSize > NcmConfig.Current.MaxCoverSize)
+            {
+                throw new InvalidDataException($"Cover size ({imageSize} bytes) larger than max cover size ({NcmConfig.Current.MaxCoverSize} bytes)");
+            }
+        }
 
         var imageData = reader.ReadBytes(imageSize);
 

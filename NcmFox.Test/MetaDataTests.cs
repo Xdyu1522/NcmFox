@@ -1,7 +1,9 @@
 ﻿using FluentAssertions;
+using NcmFox.Config;
 using NcmFox.Core;
 using NcmFox.Models;
 using TagLib;
+using File = System.IO.File;
 
 namespace NcmFox.Test;
 
@@ -24,8 +26,9 @@ public class MetaDataTests
     [Fact]
     public void Ncm_Data_Should_Parse()
     {
+        NcmConfig.Configure(new NcmOptions(){BufferSize = 65536});
         var ncm = NcmDecoder.Open(@"E:\CloudMusic\VipSongsDownload\闹闹丶,洛天依 - 星球卑.ncm");
-        using var outputStream = Stream.Null;
+        using var outputStream = File.OpenWrite(@"D:\Testsss.flac");
         ncm.Decode(outputStream);
     }
 
