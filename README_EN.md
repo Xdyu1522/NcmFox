@@ -5,7 +5,7 @@ English | [简体中文](README.md)
 [![NuGet Version](https://img.shields.io/nuget/v/NcmFox?style=flat-square)](https://www.nuget.org/packages/NcmFox/)
 [![NuGet Downloads](https://img.shields.io/nuget/dt/NcmFox?style=flat-square)](https://www.nuget.org/packages/NcmFox/)
 [![License](https://img.shields.io/github/license/Xdyu1522/NcmFox?style=flat-square)](LICENSE)
-[![.NET](https://img.shields.io/badge/.NET-8.0%20%7C%209.0-512BD4?style=flat-square)](https://dotnet.microsoft.com/)
+[![.NET](https://img.shields.io/badge/.NET-8.0%20%7C%209.0%20%7C%2010.0-512BD4?style=flat-square)](https://dotnet.microsoft.com/)
 
 A high-performance .NET library for decrypting NCM files from NetEase Cloud Music.
 
@@ -55,9 +55,9 @@ using NcmFox;
 var ncm = NcmDecoder.Open("song.ncm");
 
 // Access metadata
-Console.WriteLine($"Song: {ncm.MetaData?.SongName}");
-Console.WriteLine($"Artists: {string.Join(", ", ncm.MetaData?.Artists ?? Array.Empty<string?>())}");
-Console.WriteLine($"Album: {ncm.MetaData?.AlbumName}");
+Console.WriteLine($"Song: {ncm.MetaData.SongName}");
+Console.WriteLine($"Artists: {string.Join(", ", ncm.MetaData.GetArtists())}");
+Console.WriteLine($"Album: {ncm.MetaData.AlbumName}");
 Console.WriteLine($"Format: {ncm.SaveFormat}");
 
 // Decrypt to file
@@ -92,14 +92,18 @@ using NcmFox;
 // Extract from file (no exceptions thrown)
 if (MetaDataHelper.TryGetMetaData(new FileInfo("song.ncm"), out var meta))
 {
-    Console.WriteLine($"Song: {meta?.SongName}");
+    Console.WriteLine($"Song: {meta.SongName}");
+    Console.WriteLine($"Artists: {string.Join(", ", meta.GetArtists())}");
+    Console.WriteLine($"Album: {meta.AlbumName}");
+    Console.WriteLine($"Bitrate: {meta.Bitrate}");
+    Console.WriteLine($"Duration: {meta.Duration}");
 }
 
 // Extract from encrypted string
 string comment = "163 key(Don't modify):...";
 if (MetaDataHelper.TryGetMetaData(comment, out var meta2))
 {
-    Console.WriteLine($"Song: {meta2?.SongName}");
+    Console.WriteLine($"Song: {meta2.SongName}");
 }
 ```
 
@@ -144,6 +148,35 @@ if (ncm.CoverData != null)
 | `Decode(string outputPath)` | Decrypts and saves to file |
 | `Decode(Stream output)` | Decrypts and writes to stream |
 | `Decode()` | Decrypts and returns byte array |
+
+### MetaData
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `Id` | `string` | Unique song identifier |
+| `SongName` | `string` | Song title |
+| `Artists` | `IReadOnlyList<Artist>` | List of artists |
+| `Alias` | `IReadOnlyList<string>` | Song alias names |
+| `TranslatedNames` | `IReadOnlyList<string>` | Translated song names |
+| `Duration` | `TimeSpan?` | Song duration |
+| `AlbumName` | `string` | Album name |
+| `AlbumId` | `string` | Unique album identifier |
+| `AlbumCoverUrl` | `string` | Album cover URL |
+| `AlbumCoverDocId` | `string?` | Cover document ID |
+| `SaveFormat` | `SaveFormat` | Audio format |
+| `Bitrate` | `int?` | Bitrate (bps) |
+| `Mp3DocId` | `string?` | MP3 document ID |
+| `VolumeDelta` | `double?` | Volume adjustment (dB) |
+| `MvId` | `string?` | Music video identifier |
+| `Fee` | `int?` | Fee type |
+| `Privilege` | `Privilege?` | Privilege information |
+
+### Artist
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `Name` | `string` | Artist name |
+| `Id` | `string` | Unique artist identifier |
 
 ### NcmOptions
 

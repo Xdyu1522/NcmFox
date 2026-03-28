@@ -55,9 +55,9 @@ using NcmFox;
 var ncm = NcmDecoder.Open("song.ncm");
 
 // 查看元数据
-Console.WriteLine($"歌曲: {ncm.MetaData?.SongName}");
-Console.WriteLine($"艺术家: {string.Join(", ", ncm.MetaData?.Artists ?? Array.Empty<string?>())}");
-Console.WriteLine($"专辑: {ncm.MetaData?.AlbumName}");
+Console.WriteLine($"歌曲: {ncm.MetaData.SongName}");
+Console.WriteLine($"艺术家: {string.Join(", ", ncm.MetaData.GetArtists())}");
+Console.WriteLine($"专辑: {ncm.MetaData.AlbumName}");
 Console.WriteLine($"格式: {ncm.SaveFormat}");
 
 // 解密到文件
@@ -92,14 +92,18 @@ using NcmFox;
 // 从文件提取（无异常抛出）
 if (MetaDataHelper.TryGetMetaData(new FileInfo("song.ncm"), out var meta))
 {
-    Console.WriteLine($"歌曲: {meta?.SongName}");
+    Console.WriteLine($"歌曲: {meta.SongName}");
+    Console.WriteLine($"艺术家: {string.Join(", ", meta.GetArtists())}");
+    Console.WriteLine($"专辑: {meta.AlbumName}");
+    Console.WriteLine($"比特率: {meta.Bitrate}");
+    Console.WriteLine($"时长: {meta.Duration}");
 }
 
 // 从加密字符串提取
 string comment = "163 key(Don't modify):...";
 if (MetaDataHelper.TryGetMetaData(comment, out var meta2))
 {
-    Console.WriteLine($"歌曲: {meta2?.SongName}");
+    Console.WriteLine($"歌曲: {meta2.SongName}");
 }
 ```
 
@@ -144,6 +148,35 @@ if (ncm.CoverData != null)
 | `Decode(string outputPath)` | 解密并保存到文件 |
 | `Decode(Stream output)` | 解密并写入流 |
 | `Decode()` | 解密并返回字节数组 |
+
+### MetaData
+
+| 属性 | 类型 | 说明 |
+|------|------|------|
+| `Id` | `string` | 歌曲唯一标识符 |
+| `SongName` | `string` | 歌曲名称 |
+| `Artists` | `IReadOnlyList<Artist>` | 艺术家列表 |
+| `Alias` | `IReadOnlyList<string>` | 歌曲别名列表 |
+| `TranslatedNames` | `IReadOnlyList<string>` | 翻译名称列表 |
+| `Duration` | `TimeSpan?` | 歌曲时长 |
+| `AlbumName` | `string` | 专辑名称 |
+| `AlbumId` | `string` | 专辑唯一标识符 |
+| `AlbumCoverUrl` | `string` | 专辑封面 URL |
+| `AlbumCoverDocId` | `string?` | 封面文档 ID |
+| `SaveFormat` | `SaveFormat` | 音频格式 |
+| `Bitrate` | `int?` | 比特率 (bps) |
+| `Mp3DocId` | `string?` | MP3 文档 ID |
+| `VolumeDelta` | `double?` | 音量调整值 (dB) |
+| `MvId` | `string?` | MV 标识符 |
+| `Fee` | `int?` | 费用类型 |
+| `Privilege` | `Privilege?` | 权限信息 |
+
+### Artist
+
+| 属性 | 类型 | 说明 |
+|------|------|------|
+| `Name` | `string` | 艺术家名称 |
+| `Id` | `string` | 艺术家唯一标识符 |
 
 ### NcmOptions
 

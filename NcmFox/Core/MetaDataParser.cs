@@ -79,17 +79,7 @@ internal static class MetaDataParser
             _ => throw new InvalidDataException($"Format should be 'flac' or 'mp3' instead of {dto.format}")
         };
 
-        return new MetaData
-        {
-            Id = dto.musicId,
-            SongName = dto.musicName,
-            AlbumName = dto.album,
-            AlbumCoverUrl = dto.albumPic,
-            SaveFormat = saveFormat,
-            Artists = dto.artist.Select(a => a[0]?.ToString())
-                .Where(a => a != null)
-                .ToArray()
-        };
+        return dto.ToMetaData();
     }
 }
 

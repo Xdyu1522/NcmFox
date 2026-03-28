@@ -17,8 +17,11 @@ public class MetaDataTests
         var coverData = ncm.CoverData;
         meta.Should().NotBeNull();
         meta.SongName.Should().Be("星球卑");
-        meta.Artists.Should().HaveCount(2).And.Contain("洛天依");
+        meta.Artists.Should().HaveCount(2).And.Contain(a => a.Name == "洛天依");
+        meta.GetArtists();
         meta.AlbumName.Should().Be("星球卑");
+        meta.Bitrate.Should().Be(3999000);
+        meta.VolumeDelta.Should().Be(-8.4195);
         coverData.Should().NotBeNull();
         coverData.Format.Should().Be(CoverFormat.Png);
     }
