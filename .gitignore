@@ -5,6 +5,7 @@ obj/
 !README.md
 
 workspace.xml
+NcmFox.sln.DotSettings.user
 .vs/
 *.user
 *.suo
