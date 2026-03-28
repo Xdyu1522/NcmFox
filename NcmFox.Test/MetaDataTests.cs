@@ -45,6 +45,24 @@ public class MetaDataTests
         metaData.SongName.Should().Be("Inverted World");
     }
 
+    [Fact]
+    public void Multi_NcmFile_Decrypt()
+    {
+        var paths = GetTestFiles();
+        var outputStream = Stream.Null;
+        foreach (var f in paths)
+        {
+            var file = NcmDecoder.Open(f);
+            file.Decode(outputStream);
+        }
+    }
+
+    public List<string> GetTestFiles()
+    {
+        var paths = Directory.GetFiles(@"D:\VipSongsDownload", "*.ncm") .Take(32);
+        return paths.ToList();
+    }
+
     public string GetEncryptedMetaDataFromFile(string filePath)
     {
         using var file = TagLib.File.Create(filePath);
