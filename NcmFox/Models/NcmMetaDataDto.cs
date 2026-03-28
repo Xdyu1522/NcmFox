@@ -1,19 +1,14 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
 
 namespace NcmFox.Models;
 
-/// <summary>
-/// Data transfer object for NCM file metadata JSON deserialization.
-/// </summary>
-/// <remarks>
-/// This class uses lowercase property names to match the JSON format from NCM files.
-/// </remarks>
 [SuppressMessage("ReSharper", "InconsistentNaming")]
 internal class NcmMetaDataDto
 {
     public required string musicId { get; set; }
     public required string musicName { get; set; }
-    public required string[][] artist { get; set; }
+    public required JsonElement[][] artist { get; set; }
     public string[]? alias { get; set; }
     public string[]? transNames { get; set; }
     public int? duration { get; set; }
@@ -30,19 +25,8 @@ internal class NcmMetaDataDto
     public Privilege? privilege { get; set; }
 }
 
-/// <summary>
-/// Provides extension methods for converting DTOs to domain models.
-/// </summary>
 internal static class MedaDataDtoMapper
 {
-    /// <summary>
-    /// Converts an <see cref="NcmMetaDataDto"/> to a <see cref="MetaData"/> instance.
-    /// </summary>
-    /// <param name="dto">The DTO to convert.</param>
-    /// <returns>A new <see cref="MetaData"/> instance populated from the DTO.</returns>
-    /// <exception cref="InvalidDataException">
-    /// Thrown when the format field contains an invalid value.
-    /// </exception>
     public static MetaData ToMetaData(this NcmMetaDataDto dto)
     {
         var saveFormat = dto.format switch
@@ -56,14 +40,13 @@ internal static class MedaDataDtoMapper
         {
             Id = dto.musicId,
             SongName = dto.musicName,
-            Artists = dto.artist?
-                          .Where(a => a.Length > 0)
+            Artists = dto.artist
                           .Select(a => new Artist
                           {
-                              Name = a.ElementAtOrDefault(0) ?? "Unknown",
-                              Id = a.ElementAtOrDefault(1) ?? string.Empty
+                              Name = GetArtistName(a),
+                              Id = GetArtistId(a)
                           })
-                          .ToList() ?? [],
+                          .ToList(),
             Alias = dto.alias?.ToList() ?? [],
             TranslatedNames = dto.transNames?.ToList() ?? [],
             Duration = dto.duration.HasValue ? TimeSpan.FromMilliseconds(dto.duration.Value) : null,
@@ -78,6 +61,32 @@ internal static class MedaDataDtoMapper
             MvId = dto.mvId,
             Fee = dto.fee,
             Privilege = dto.privilege
+        };
+    }
+
+    private static string GetArtistName(JsonElement[] artist)
+    {
+        if (artist.Length == 0)
+            return "Unknown";
+
+        return artist[0].ValueKind switch
+        {
+            JsonValueKind.String => artist[0].GetString() ?? "Unknown",
+            _ => "Unknown"
+        };
+    }
+
+    private static string GetArtistId(JsonElement[] artist)
+    {
+        if (artist.Length < 2)
+            return string.Empty;
+
+        return artist[1].ValueKind switch
+        {
+            JsonValueKind.String => artist[1].GetString() ?? string.Empty,
+            JsonValueKind.Number when artist[1].GetInt32() == 0 => string.Empty,
+            JsonValueKind.Number => artist[1].GetInt32().ToString(),
+            _ => string.Empty
         };
     }
 }
