@@ -54,12 +54,7 @@ public static class NcmFileExtensions
     /// </remarks>
     public static void Decode(this NcmFile file, Stream outputStream)
     {
-        if (!file.IsInitialized)
-            throw new InvalidDataException();
-
-        using var fs = file.FileInfo.OpenRead();
-        fs.Position = file.AudioOffset;
-        AudioDecipher.Decipher(fs, outputStream, file.KeyBox);
+        AudioDecipher.Decipher(file, outputStream);
     }
 
     /// <summary>

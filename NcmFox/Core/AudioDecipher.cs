@@ -8,7 +8,8 @@ namespace NcmFox.Core;
 
 internal static class AudioDecipher
 {
-    private static byte[] BuildKeyStream(byte[] keyBox)
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static byte[] BuildKeyStream(byte[] keyBox)
     {
         var lut = new byte[256];
         var keyStream = new byte[256];
@@ -27,10 +28,8 @@ internal static class AudioDecipher
         return keyStream;
     }
 
-    public static void Decipher(Stream input, Stream output, byte[] keyBox)
+    public static void Decipher(Stream input, Stream output, byte[] keyStream)
     {
-        var keyStream = BuildKeyStream(keyBox);
-
         var bufferSize = NcmConfig.Current.BufferSize;
         var buffer = ArrayPool<byte>.Shared.Rent(bufferSize);
 
@@ -59,7 +58,7 @@ internal static class AudioDecipher
 
         using var fs = file.FileInfo.OpenRead();
         fs.Position = file.AudioOffset;
-        Decipher(fs, outputStream, file.KeyBox);
+        Decipher(fs, outputStream, file.KeyStream);
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -107,7 +106,6 @@ internal static class AudioDecipher
             j = (j + vectorSize) & 0xff;
         }
 
-        // 剩余部分走标量
         ProcessScalar(buffer.Slice(i), keyStream, offset + i);
     }
 

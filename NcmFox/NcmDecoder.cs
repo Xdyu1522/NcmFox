@@ -64,6 +64,7 @@ public static class NcmDecoder
         reader.ReadBytes(2);
 
         var keyBox = KeyDataParser.Parse(reader);
+        var keyStream = AudioDecipher.BuildKeyStream(keyBox);
         var metaData = MetaDataParser.Parse(reader);
         var coverData = CoverParser.Parse(reader);
         var audioOffset = reader.BaseStream.Position;
@@ -72,6 +73,7 @@ public static class NcmDecoder
         {
             FileInfo = new FileInfo(filePath),
             KeyBox = keyBox,
+            KeyStream = keyStream,
             AudioOffset = audioOffset,
             CoverData = coverData,
             MetaData = metaData,

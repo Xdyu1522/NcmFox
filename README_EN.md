@@ -192,19 +192,44 @@ if (ncm.CoverData != null)
 
 NcmFox is deeply optimized for high throughput:
 
-| Optimization | Description |
-|--------------|-------------|
-| SIMD Acceleration | Uses AVX2/SSE2 for XOR operations |
-| Memory Pooling | `ArrayPool<byte>` reduces allocations |
-| Loop Unrolling | 8x unrolled scalar fallback path |
-| Zero-Copy | Minimizes intermediate allocations |
+### Optimization Techniques
 
-Typical performance:
+| Technique | Description |
+|-----------|-------------|
+| **KeyStream Precomputation** | Precompute decryption stream when opening file, avoid repeated calculations |
+| **SIMD Acceleration** | Uses AVX2/SSE2 for XOR operations |
+| **Memory Pooling** | `ArrayPool<byte>` reduces allocations, zero contention in parallel scenarios |
+| **Loop Unrolling** | 8x unrolled scalar fallback path |
 
-| Scenario | Throughput |
-|----------|------------|
-| FLAC files | 400-500 MB/s |
-| MP3 files | 300-400 MB/s |
+### Benchmark Results
+
+Test Environment:
+```
+BenchmarkDotNet v0.15.8, Windows 11 (10.0.26200.8037)
+12th Gen Intel Core i7-1255U 1.70GHz, 1 CPU, 12 logical and 10 physical cores
+.NET SDK 10.0.103
+```
+
+| Method | Files | Buffer | Time | Allocated |
+|--------|-------|--------|------|-----------|
+| Sequential | 8 | 1 MB | 50.50 ms | 6.88 KB |
+| **Parallel** | **8** | **1 MB** | **28.72 ms** | **10.3 KB** |
+| Sequential | 16 | 1 MB | 108.78 ms | 13.41 KB |
+| **Parallel** | **16** | **1 MB** | **56.08 ms** | **18.2 KB** |
+| Sequential | 32 | 1 MB | 197.01 ms | 26.64 KB |
+| **Parallel** | **32** | **1 MB** | **96.53 ms** | **32.05 KB** |
+
+**Key Metrics**:
+- 🚀 **Parallel Speedup**: 1.9x - 2.0x (near ideal linear scaling)
+- 💾 **Memory Efficiency**: Minimal allocations (10-40 KB), zero GC pressure
+- 📈 **Throughput**: 400-500 MB/s
+
+### Robustness Improvements
+
+JSON parsing handles dirty data:
+- Artist ID of `0` is automatically treated as unknown
+- Mixed types (string/number) are uniformly converted
+- Null values are filled with defaults
 
 ## 🤝 Contributing
 

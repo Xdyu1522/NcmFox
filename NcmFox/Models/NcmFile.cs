@@ -48,6 +48,14 @@ public sealed class NcmFile
     public required byte[] KeyBox { get; init; }
 
     /// <summary>
+    /// Gets the pre-computed key stream for decryption.
+    /// </summary>
+    /// <value>
+    /// A 256-byte array containing the pre-computed key stream.
+    /// </value>
+    internal byte[] KeyStream { get; init; } = null!;
+
+    /// <summary>
     /// Gets the offset in the file where the encrypted audio data begins.
     /// </summary>
     /// <value>
