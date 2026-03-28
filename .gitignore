@@ -1,7 +1,13 @@
 bin/
 obj/
-/packages/
-riderModule.iml
-/_ReSharper.Caches/
+
 *.md
 !README.md
+
+workspace.xml
+.vs/
+*.user
+*.suo
+
+riderModule.iml
+/_ReSharper.Caches/
