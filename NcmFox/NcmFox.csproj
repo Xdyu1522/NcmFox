@@ -1,38 +1,50 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-        <LangVersion>latest</LangVersion>
-        
-        <!-- Package metadata -->
-        <PackageId>NcmFox</PackageId>
-        <Version>0.1.0</Version>
-        <Authors>Xdyu</Authors>
-        <Description>High-performance NCM file decryption library with SIMD optimization for NetEase Cloud Music.</Description>
-        <PackageTags>ncm;netease;music;decryption;audio;flac;mp3</PackageTags>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <PackageReadmeFile>README.md</PackageReadmeFile>
-        <RepositoryUrl>https://github.com/Xdyu1522/NcmFox</RepositoryUrl>
-        <PackageProjectUrl>https://github.com/Xdyu1522/NcmFox</PackageProjectUrl>
-        
-        <!-- Documentation and symbols -->
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <IncludeSymbols>true</IncludeSymbols>
-        <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-        
-        <!-- Suppress warnings for missing documentation in internal code -->
-        <NoWarn>$(NoWarn);CS1591</NoWarn>
-    </PropertyGroup>
+  <PropertyGroup>
+    <!-- Multi-target -->
+    <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
 
-    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-        <Optimize>true</Optimize>
-    </PropertyGroup>
+    <!-- Language -->
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
 
-    <ItemGroup>
-        <None Include="..\README.md" Pack="true" PackagePath="\"/>
-        <None Include="..\README_EN.md" Pack="true" PackagePath="\"/>
-    </ItemGroup>
+    <!-- Package metadata -->
+    <PackageId>NcmFox</PackageId>
+    <Version>0.1.0</Version> <!-- CI 会覆盖 -->
+    <Authors>Xdyu</Authors>
+    <Description>High-performance NCM file decryption library with SIMD optimization for NetEase Cloud Music.</Description>
+    <PackageTags>ncm;netease;music;decryption;audio;flac;mp3</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+
+    <RepositoryUrl>https://github.com/Xdyu1522/NcmFox</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>https://github.com/Xdyu1522/NcmFox</PackageProjectUrl>
+
+    <!-- Documentation & Symbols -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
+    <!-- SourceLink（.NET 10 内置，无需额外包） -->
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+
+    <!-- Build -->
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <Optimize>true</Optimize>
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+  </PropertyGroup>
+
+  <!-- README 正确打包方式 -->
+  <ItemGroup>
+    <None Include="../README.md" Pack="true" PackagePath="README.md" />
+    <None Include="../README_EN.md" Pack="true" PackagePath="README_EN.md" />
+  </ItemGroup>
 
 </Project>
