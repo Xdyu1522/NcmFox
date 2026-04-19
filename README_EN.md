@@ -226,10 +226,11 @@ BenchmarkDotNet v0.15.8, Windows 11 (10.0.26200.8037)
 
 ### Robustness Improvements
 
-JSON parsing handles dirty data:
-- Artist ID of `0` is automatically treated as unknown
-- Mixed types (string/number) are uniformly converted
-- Null values are filled with defaults
+JSON parsing handles dirty data gracefully:
+- **Mixed Type Auto-Conversion** - Fields like `musicId`, `albumId`, `mvId` support both string and number types
+- **Smart Null Handling** - Number `0` or string `"0"` are automatically recognized as unknown and converted to `null`
+- **Artist Data Tolerance** - Artist ID of `0` is automatically treated as empty string
+- **Empty String Normalization** - Whitespace strings are automatically converted to `null`
 
 ## 🤝 Contributing
 

@@ -1,17 +1,20 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace NcmFox.Models;
 
 [SuppressMessage("ReSharper", "InconsistentNaming")]
 internal class NcmMetaDataDto
 {
+    [JsonConverter(typeof(StringOrNumberConverter))]
     public required string musicId { get; set; }
     public required string musicName { get; set; }
     public required JsonElement[][] artist { get; set; }
     public string[]? alias { get; set; }
     public string[]? transNames { get; set; }
     public int? duration { get; set; }
+    [JsonConverter(typeof(StringOrNumberConverter))]
     public required string albumId { get; set; }
     public required string album { get; set; }
     public required string albumPic { get; set; }
@@ -20,6 +23,7 @@ internal class NcmMetaDataDto
     public int? bitrate { get; set; }
     public string? mp3DocId { get; set; }
     public double? volumeDelta { get; set; }
+    [JsonConverter(typeof(StringOrNumberConverter))]
     public string? mvId { get; set; }
     public int? fee { get; set; }
     public Privilege? privilege { get; set; }
@@ -88,5 +92,30 @@ internal static class MedaDataDtoMapper
             JsonValueKind.Number => artist[1].GetInt32().ToString(),
             _ => string.Empty
         };
+    }
+}
+
+public class StringOrNumberConverter : JsonConverter<string>
+{
+    public override string? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    {
+        return reader.TokenType switch
+        {
+            JsonTokenType.String => Normalize(reader.GetString()),
+            JsonTokenType.Number => Normalize(reader.GetInt64().ToString()),
+            _ => throw new JsonException($"Unexpected token {reader.TokenType}")
+        };
+    }
+    
+    private static string? Normalize(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            return null;
+        return value == "0" ? null : value;
+    }
+
+    public override void Write(Utf8JsonWriter writer, string value, JsonSerializerOptions options)
+    {
+        writer.WriteStringValue(value);
     }
 }

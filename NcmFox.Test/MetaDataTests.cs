@@ -30,7 +30,7 @@ public class MetaDataTests
     public void Ncm_Data_Should_Parse()
     {
         NcmConfig.Configure(new NcmOptions(){BufferSize = 65536});
-        var ncm = NcmDecoder.Open(@"E:\CloudMusic\VipSongsDownload\闹闹丶,洛天依 - 星球卑.ncm");
+        var ncm = NcmDecoder.Open(@"D:\ncm\周深 - 化身孤岛的鲸.ncm");
         using var outputStream = File.OpenWrite(@"D:\Testsss.flac");
         ncm.Decode(outputStream);
     }
